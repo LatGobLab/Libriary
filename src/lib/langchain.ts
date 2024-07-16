@@ -4,16 +4,13 @@ import { PromptTemplate } from "@langchain/core/prompts";
 import {
   RunnableSequence,
   RunnablePassthrough,
+  RunnableMap,
 } from "@langchain/core/runnables";
 import { StringOutputParser } from "@langchain/core/output_parsers";
-
-import { env } from 'process';
-
 import { PineconeStore } from "@langchain/pinecone";
-
 import { Pinecone } from '@pinecone-database/pinecone';
-import initPineconeClient from "./pinecone-client";
 
+import { Document } from "langchain/document";
 
 export default async function langchain() {
 
@@ -96,38 +93,30 @@ export default async function langchain() {
     new StringOutputParser(),
   ]);
 
-  const answerChain = RunnableSequence.from([
-    {
-      context: retriever.pipe(formatDocumentsAsString),
-      question: new RunnablePassthrough(),
-    },
-    ANSWER_PROMPT,
-    model,
-  ]);
 
-  const conversationalRetrievalQAChain =
-    standaloneQuestionChain.pipe(answerChain);
+  const answerChain = RunnableMap.from({
+    context: retriever,
+    question: new RunnablePassthrough(),
+  }).assign({
+    answer: RunnableSequence.from([
+      (input: { context: Document[]; question: string }) => ({
+        context: formatDocumentsAsString(input.context),
+        question: input.question,
+      }),
+      ANSWER_PROMPT,
+      model,
+      new StringOutputParser(),
+    ]),
+  });
 
-  const result1 = await conversationalRetrievalQAChain.invoke({
-    question: "What is the powerhouse of the cell?",
+  const conversationalRetrievalQAChain = standaloneQuestionChain.pipe(answerChain);
+
+  const result = await conversationalRetrievalQAChain.invoke({
+    question: "De que se encargaron la SS?",
     chat_history: [],
   });
-  console.log(result1);
-  /*
-    AIMessage { content: "The powerhouse of the cell is the mitochondria." }
-  */
 
-  const result2 = await conversationalRetrievalQAChain.invoke({
-    question: "What are they made out of?",
-    chat_history: [
-      [
-        "What is the powerhouse of the cell?",
-        "The powerhouse of the cell is the mitochondria.",
-      ],
-    ],
-  });
-  console.log(result2);
-  /*
-    AIMessage { content: "Mitochondria are made out of lipids." }
-  */
+  console.log(result);
+
+  return result;
 }

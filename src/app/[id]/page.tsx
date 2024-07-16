@@ -6,10 +6,15 @@ import initPineconeClient from '@/lib/pinecone-client';
 import { Button } from '@/components/ui/button';
 import langchain from '@/lib/langchain';
 
+function formatPath(pathname: string) {
+    return pathname.startsWith('/') ? pathname.slice(1) : pathname;
+}
+
 export default function page() {
+
     const pathname = usePathname();
 
-    const pineconeClient = initPineconeClient();
+    const pathformatted = formatPath(pathname);
 
     const handler = async () => {
         const result = await langchain();
@@ -17,9 +22,12 @@ export default function page() {
     }
 
     return (
-        <div className="flex flex-1 py-4">
-            <div className="w-full">
+        <div className="flex content-between py-4">
+            <div className="">
                 <Button onClick={() => handler()}>Get Similar Items</Button>
+            </div>
+            <div className="w-full">
+                <Chat path={pathformatted} />
             </div>
         </div>
     )

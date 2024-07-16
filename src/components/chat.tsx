@@ -1,16 +1,21 @@
 "use client";
 
-import { scrollToBottom, initialMessages, getSources } from "@/lib/utils";
+import { scrollToBottom, initialMessages } from "@/lib/utils";
 import { ChatLine } from "./chat-line";
 import { useChat, Message } from "ai/react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { useEffect, useRef } from "react";
+import { Spinner } from "./ui/spinner";
 
-export function Chat() {
+export function Chat({ path }: { path: String }) {
     const containerRef = useRef<HTMLDivElement | null>(null);
     const { messages, input, handleInputChange, handleSubmit, isLoading, data } =
         useChat({
+            api: "/api/chat",
+            body: {
+                path: path,
+            },
             initialMessages,
         });
 
@@ -19,6 +24,7 @@ export function Chat() {
     }, [messages]);
 
     return (
+
         <div className="rounded-2xl border h-[75vh] flex flex-col justify-between">
             <div className="p-6 overflow-auto" ref={containerRef}>
                 {messages.map(({ id, role, content }: Message, index) => (
@@ -26,8 +32,6 @@ export function Chat() {
                         key={id}
                         role={role}
                         content={content}
-                        // Start from the third message of the assistant
-                        sources={data?.length ? getSources(data, role, index) : []}
                     />
                 ))}
             </div>
@@ -41,7 +45,7 @@ export function Chat() {
                 />
 
                 <Button type="submit" className="w-24">
-                    {isLoading ? "cargando" : "Ask"}
+                    {isLoading ? <Spinner /> : "Ask"}
                 </Button>
             </form>
         </div>
