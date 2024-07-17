@@ -16,16 +16,8 @@ export default function page() {
 
     const pathformatted = formatPath(pathname);
 
-    const handler = async () => {
-        const result = await langchain();
-        console.log(result);
-    }
-
     return (
         <div className="flex content-between py-4">
-            <div className="">
-                <Button onClick={() => handler()}>Get Similar Items</Button>
-            </div>
             <div className="w-full">
                 <Chat path={pathformatted} />
             </div>

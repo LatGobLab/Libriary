@@ -16,26 +16,25 @@ import {
 import { Message } from "ai/react";
 import ReactMarkdown from "react-markdown";
 import { formattedText } from "@/lib/utils";
-
-const convertNewLines = (text: string) =>
-  text.split("\n").map((line, i) => (
-    <span key={i}>
-      {line}
-      <br />
-    </span>
-  ));
+import { TypeAnimation } from 'react-type-animation';
+import { useEffect, useState } from "react";
 
 interface ChatLineProps extends Partial<Message> {
+  isLastMessage: boolean;
 }
 
-export function ChatLine({
-  role = "assistant",
-  content,
-}: ChatLineProps) {
+export function ChatLine({ role = "assistant", content, isLastMessage }: ChatLineProps) {
+  const [shouldAnimate, setShouldAnimate] = useState(false);
+
+  useEffect(() => {
+    if (isLastMessage) {
+      setShouldAnimate(true);
+    }
+  }, [isLastMessage]);
+
   if (!content) {
     return null;
   }
-  const formattedMessage = convertNewLines(content);
 
   return (
     <div>
@@ -52,28 +51,21 @@ export function ChatLine({
           </CardTitle>
         </CardHeader>
         <CardContent className="text-sm">
-          <Balancer>{formattedMessage}</Balancer>
-        </CardContent>
-        {/* <CardFooter>
-          <CardDescription className="w-full">
-            {sources && sources.length ? (
-              <Accordion type="single" collapsible className="w-full">
-                {sources.map((source, index) => (
-                  <AccordionItem value={`source-${index}`} key={index}>
-                    <AccordionTrigger>{`Source ${index + 1}`}</AccordionTrigger>
-                    <AccordionContent>
-                      <ReactMarkdown>
-                        {formattedText(source)}
-                      </ReactMarkdown>
-                    </AccordionContent>
-                  </AccordionItem>
-                ))}
-              </Accordion>
+          <Balancer>
+            {(shouldAnimate && role === "assistant") ? (
+              <TypeAnimation
+                sequence={[content]}
+                wrapper="span"
+                cursor={false}
+                repeat={0}
+                style={{ whiteSpace: 'pre-line', display: 'inline-block' }}
+                speed={90}
+              />
             ) : (
-              <></>
+              <span style={{ whiteSpace: 'pre-line' }}>{content}</span>
             )}
-          </CardDescription>
-        </CardFooter> */}
+          </Balancer>
+        </CardContent>
       </Card>
     </div>
   );

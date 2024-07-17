@@ -1,17 +1,43 @@
 import { NextRequest, NextResponse } from "next/server";
-import { Message } from "ai";
+import langchain from "@/lib/langchain";
 
-const formatMessage = (message: Message) => {
-    return `${message.role === "user" ? "User" : "Assistant"}: ${message.content}`;
-};
+import { Message } from "ai/react";
+
 
 export async function POST(req: NextRequest) {
     const { messages, path } = await req.json();
-
     console.log("mensaje: ", messages);
 
-    const formattedMessages = messages.map(formatMessage);
-    console.log("formattedMessages: ", formattedMessages);
+    const question = messages[messages.length - 1].content;
 
-    return NextResponse.json({ messages: formattedMessages });
+    const chatHistory: [string, string][] = [];
+    let currentUserMessage = "";
+
+    for (let i = 0; i < messages.length - 1; i++) {
+        const message = messages[i];
+        if (message.role === "user") {
+            currentUserMessage = message.content;
+        } else if (message.role === "assistant" && currentUserMessage) {
+            chatHistory.push([currentUserMessage, message.content]);
+            currentUserMessage = "";
+        }
+    }
+
+    try {
+        const result = await langchain({ question, chatHistory, path });
+
+        console.log("result: ", result);
+
+        messages.push({
+            id: Date.now().toString(),
+            role: "assistant",
+            content: result.answer
+        });
+
+        return NextResponse.json(messages);
+    } catch (error) {
+        console.error("Error en el API:", error);
+        return NextResponse.json({ error: "Hubo un error al procesar la solicitud" }, { status: 500 });
+    }
+
 }
