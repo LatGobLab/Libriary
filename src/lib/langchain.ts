@@ -24,7 +24,7 @@ export default async function langchain({ question, chatHistory, path }: Argumen
 
     const model = new ChatOpenAI({
       apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
-      modelName: "gpt-3.5-turbo",
+      modelName: "gpt-4o-mini",
       temperature: 0,
     });
 
@@ -38,11 +38,14 @@ export default async function langchain({ question, chatHistory, path }: Argumen
       condenseQuestionTemplate
     );
 
-    const answerTemplate = `Answer the question based only on the following context:
+    const answerTemplate = `You are an enthusiastic AI assistant. Use the following pieces of context to answer the question at the end.
+  1. If you don't know the answer, just say you don't know. DO NOT try to make up an answer.
+  2. If the question is not related to the context, politely respond that you are tuned to only answer questions that are related to the context.
     {context}
     
     Question: {question}
-    `;
+    
+    Helpful answer in markdown:`;
     const ANSWER_PROMPT = PromptTemplate.fromTemplate(answerTemplate);
 
     const formatChatHistory = (chatHistory: [string, string][]) => {

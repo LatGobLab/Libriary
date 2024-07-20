@@ -1,15 +1,16 @@
 "use client";
 
-import { scrollToBottom, initialMessages } from "@/lib/utils";
+import { initialMessages } from "@/lib/utils";
 import { ChatLine } from "./chat-line";
 import { useChat, Message } from "ai/react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Spinner } from "./ui/spinner";
 
 export function Chat({ path }: { path: String }) {
     const containerRef = useRef<HTMLDivElement | null>(null);
+
     const { messages, input, handleInputChange, handleSubmit, setMessages, isLoading } =
         useChat({
             api: "/api/chat",
@@ -22,26 +23,28 @@ export function Chat({ path }: { path: String }) {
                     console.error("Error en la respuesta del API");
                     return;
                 }
-                const api = await response.json();
-                console.log("API Response:", api);
-                setMessages(api);
+                const data = await response.json();
+                console.log("API Response:", data);
+                setMessages(data.messages);
             },
         });
 
-    console.log("Mensajes desde Chat: ", messages);
-
+    console.log("Mensajes desde Chat: ", messages)
     useEffect(() => {
-        setTimeout(() => scrollToBottom(containerRef), 100);
+        if (containerRef.current) {
+            containerRef.current.scrollTop = containerRef.current.scrollHeight;
+        }
     }, [messages]);
 
     return (
-        <div className="rounded-2xl border h-[75vh] flex flex-col justify-between">
+        <div className="rounded-2xl border h-[90vh] flex flex-col justify-between">
             <div className="p-6 overflow-auto" ref={containerRef}>
-                {messages.map(({ id, role, content }: Message, index: number) => (
+                {messages.map(({ id, role, content, annotations }: Message, index: number) => (
                     <ChatLine
                         key={id}
                         role={role}
                         content={content}
+                        annotations={annotations}
                         isLastMessage={index === messages.length - 1}
                     />
                 ))}

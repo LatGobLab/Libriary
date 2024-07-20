@@ -28,13 +28,18 @@ export async function POST(req: NextRequest) {
 
         console.log("result: ", result);
 
+        const relevantDocuments = result.context.slice(0, 2);
+
         messages.push({
             id: Date.now().toString(),
             role: "assistant",
-            content: result.answer
+            content: result.answer,
+            annotations: relevantDocuments
         });
 
-        return NextResponse.json(messages);
+        return NextResponse.json({
+            messages: messages,
+        });
     } catch (error) {
         console.error("Error en el API:", error);
         return NextResponse.json({ error: "Hubo un error al procesar la solicitud" }, { status: 500 });
