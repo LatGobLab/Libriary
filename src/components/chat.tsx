@@ -37,7 +37,7 @@ export function Chat({ path }: { path: String }) {
     }, [messages]);
 
     return (
-        <div className="rounded-2xl border h-[90vh] flex flex-col justify-between">
+        <div className="rounded-2xl w-full border  h-[85vh] flex flex-col justify-between">
             <div className="p-6 overflow-auto" ref={containerRef}>
                 {messages.map(({ id, role, content, annotations }: Message, index: number) => (
                     <ChatLine

@@ -3,12 +3,15 @@ import { Button } from '@/components/ui/button'
 import Link from 'next/link';
 import React from 'react'
 import { useState } from "react";
+import { companies } from '@/lib/const';
 
 type Company = {
     id: string
     name: string
     description: string
     img: string | null
+    books: string[]
+
 }
 export default function App() {
     const [selectedCompany, setSelectedCompany] = useState<Company | null>(null);
@@ -16,41 +19,7 @@ export default function App() {
     const handleCompanyClick = (company: Company) => {
         setSelectedCompany(company)
     }
-    const companies = [
-        {
-            id: "amazon",
-            name: "Acme Inc.",
-            description:
-                "Acme Inc. is a leading provider of innovative products and services. With a focus on quality and customer satisfaction, Acme has been a trusted name in the industry for over 50 years.",
-            img: "amazon.jpg",
 
-        },
-        {
-            id: "google",
-            name: "Globex Corp.",
-            description:
-                "Globex Corp. is a multinational conglomerate with a diverse portfolio of businesses. From technology to manufacturing, Globex is at the forefront of innovation and growth.",
-            img: "google.jpg",
-
-        },
-        {
-            id: "microsoft",
-            name: "Stark Industries",
-            description:
-                "Stark Industries is a leading technology and defense company, known for its innovative products and cutting-edge research. Led by the visionary Tony Stark, Stark Industries is shaping the future.",
-            img: "microsoft.png",
-
-        },
-        {
-            id: "latgoblab",
-            name: "Wayne Enterprises",
-            description:
-                "Wayne Enterprises is a diversified conglomerate with interests in technology, real estate, and philanthropy. Led by the enigmatic Bruce Wayne, the company is committed to making the world a better place.",
-            img: "latgoblab.png",
-
-        },
-
-    ]
     return (
         <div>
             <main className="container mx-auto py-12 px-4 md:px-6">
