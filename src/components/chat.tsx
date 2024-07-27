@@ -3,9 +3,13 @@
 import { initialMessages } from "@/lib/utils";
 import { ChatLine } from "./chat-line";
 import { useChat, Message } from "ai/react";
+
+import { useEffect, useRef, useState } from "react";
+
+import { placeholders } from '@/components/const/placeholders';
+import { PlaceholdersAndVanishInput } from "./ui/placeholders-and-vanish-input";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { useEffect, useRef } from "react";
 import { Spinner } from "./ui/spinner";
 
 type Props = {
@@ -16,6 +20,7 @@ type Props = {
 export function Chat({ path, userMessage }: Props) {
     const containerRef = useRef<HTMLDivElement | null>(null);
     const submitButtonRef = useRef<HTMLButtonElement | null>(null);
+    const [isUserMessageUsed, setIsUserMessageUsed] = useState(false);
 
     const { messages, input, handleInputChange, handleSubmit, setMessages, setInput, isLoading } =
         useChat({
@@ -44,19 +49,23 @@ export function Chat({ path, userMessage }: Props) {
         if (userMessage && userMessage.trim() !== '') {
             setInput(userMessage);
             console.log("User Message", userMessage);
-
+            setIsUserMessageUsed(true);
             setTimeout(() => {
                 if (submitButtonRef.current) {
                     submitButtonRef.current.click();
                 }
             }, 0);
         }
-
-        userMessage = '';
     }, [userMessage, setInput]);
 
+    useEffect(() => {
+        if (isLoading && isUserMessageUsed) {
+            setIsUserMessageUsed(false);
+        }
+    }, [isLoading]);
+
     return (
-        <div className="rounded-2xl w-full border  h-[85vh] flex flex-col justify-between">
+        <div className="rounded-2xl w-full border h-[85vh] flex flex-col justify-between">
             <div className="p-6 overflow-auto" ref={containerRef}>
                 {messages.map(({ id, role, content, annotations }: Message, index: number) => (
                     <ChatLine
@@ -68,20 +77,30 @@ export function Chat({ path, userMessage }: Props) {
                     />
                 ))}
             </div>
+            {isUserMessageUsed ? (
+                <form onSubmit={handleSubmit} className="p-4 flex clear-both">
+                    <Input
+                        value={input}
+                        placeholder={"Escribe tu pregunta a " + path}
+                        onChange={handleInputChange}
+                        className="mr-2"
+                    />
 
-            <form onSubmit={handleSubmit} className="p-4 flex clear-both">
-                <Input
-                    value={input}
-                    placeholder={"Escribe tu pregunta a " + path}
-                    onChange={handleInputChange}
-                    className="mr-2"
-                />
+                    <Button type="submit" className="w-24" ref={submitButtonRef}>
+                        {isLoading ? <Spinner /> : "Ask"}
+                    </Button>
+                </form>
 
-                <Button type="submit" className="w-24" ref={submitButtonRef}>
-                    {isLoading ? <Spinner /> : "Ask"}
-                </Button>
+            ) : (
+                <div className="p-4 flex clear-both ">
+                    <PlaceholdersAndVanishInput
+                        placeholders={placeholders}
+                        onChange={handleInputChange}
+                        onSubmit={handleSubmit}
+                    />
+                </div>
 
-            </form>
+            )}
         </div>
     );
 }

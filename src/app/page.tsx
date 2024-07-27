@@ -1,10 +1,9 @@
 "use client";
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import React, { useState, ChangeEvent, FormEvent } from 'react';
 
+import { PlaceholdersAndVanishInput } from '@/components/ui/placeholders-and-vanish-input';
+import { useRouter } from 'next/navigation';
+import React, { useState } from 'react';
+import { placeholders } from '@/components/const/placeholders';
 
 
 function App() {
@@ -12,11 +11,11 @@ function App() {
     const router = useRouter();
 
 
-    const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInputValue(e.target.value);
     };
 
-    const handleSubmit = (e: FormEvent) => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         console.log('inputValue', inputValue);
         router.push(`/amazon?query=${encodeURIComponent(inputValue)}`);
@@ -43,7 +42,15 @@ function App() {
                 </div>
             </div>
 
-            <form onSubmit={handleSubmit} className="p-4 flex clear-both w-full items-center justify-center">
+            <div className="flex w-full max-w-screen-md items-center space-x-2">
+                <PlaceholdersAndVanishInput
+                    placeholders={placeholders}
+                    onChange={handleInputChange}
+                    onSubmit={handleSubmit} />
+            </div>
+
+            {/* <form onSubmit={handleSubmit} className="p-4 flex clear-both w-full items-center justify-center">
+
                 <div className="flex w-full max-w-screen-md items-center space-x-2">
                     <Input type="text"
                         placeholder="Escribe tu pregunta a la IA"
@@ -51,9 +58,9 @@ function App() {
                         onChange={handleInputChange} />
 
                     <Button type="submit" className='px-10'>Pregunta</Button>
+                </div> 
+            </form>*/}
 
-                </div>
-            </form>
         </div>
     )
 }

@@ -4,7 +4,7 @@ import { usePathname, useSearchParams } from 'next/navigation';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
 import { Chat } from '@/components/chat';
 import PDFViewer from '@/components/pdf/PDFViewer';
-import { companies } from '@/lib/const';
+import { companies } from '@/components/const/companies';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 

@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button'
 import Link from 'next/link';
 import React from 'react'
 import { useState } from "react";
-import { companies } from '@/lib/const';
+import { companies } from '@/components/const/companies';
 
 type Company = {
     id: string
