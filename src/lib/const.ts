@@ -35,8 +35,6 @@ export const companies = [
             "historia de la argentina democratica",
             "historia de la argentina federal",
             "historia de la argentina unitaria historia de la argentina unitaria",
-
-
         ]
     },
     {
@@ -64,14 +62,14 @@ export const companies = [
     },
     {
         id: "latgoblab",
-        name: "Wayne Enterprises",
+        name: "Lat Gob Lab",
         description:
             "Wayne Enterprises is a diversified conglomerate with interests in technology, real estate, and philanthropy. Led by the enigmatic Bruce Wayne, the company is committed to making the world a better place.",
         img: "latgoblab.png",
         books: [
             "quimica",
             "historia"
-        ]
+        ],
 
     },
 ]

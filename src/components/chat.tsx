@@ -5,13 +5,19 @@ import { ChatLine } from "./chat-line";
 import { useChat, Message } from "ai/react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { Spinner } from "./ui/spinner";
 
-export function Chat({ path }: { path: String }) {
-    const containerRef = useRef<HTMLDivElement | null>(null);
+type Props = {
+    path: string;
+    userMessage: string;
+}
 
-    const { messages, input, handleInputChange, handleSubmit, setMessages, isLoading } =
+export function Chat({ path, userMessage }: Props) {
+    const containerRef = useRef<HTMLDivElement | null>(null);
+    const submitButtonRef = useRef<HTMLButtonElement | null>(null);
+
+    const { messages, input, handleInputChange, handleSubmit, setMessages, setInput, isLoading } =
         useChat({
             api: "/api/chat",
             body: {
@@ -24,17 +30,30 @@ export function Chat({ path }: { path: String }) {
                     return;
                 }
                 const data = await response.json();
-                console.log("API Response:", data);
                 setMessages(data.messages);
             },
         });
 
-    console.log("Mensajes desde Chat: ", messages)
     useEffect(() => {
         if (containerRef.current) {
             containerRef.current.scrollTop = containerRef.current.scrollHeight;
         }
     }, [messages]);
+
+    useEffect(() => {
+        if (userMessage && userMessage.trim() !== '') {
+            setInput(userMessage);
+            console.log("User Message", userMessage);
+
+            setTimeout(() => {
+                if (submitButtonRef.current) {
+                    submitButtonRef.current.click();
+                }
+            }, 0);
+        }
+
+        userMessage = '';
+    }, [userMessage, setInput]);
 
     return (
         <div className="rounded-2xl w-full border  h-[85vh] flex flex-col justify-between">
@@ -53,14 +72,15 @@ export function Chat({ path }: { path: String }) {
             <form onSubmit={handleSubmit} className="p-4 flex clear-both">
                 <Input
                     value={input}
-                    placeholder={"Type to chat with AI..."}
+                    placeholder={"Escribe tu pregunta a " + path}
                     onChange={handleInputChange}
                     className="mr-2"
                 />
 
-                <Button type="submit" className="w-24">
+                <Button type="submit" className="w-24" ref={submitButtonRef}>
                     {isLoading ? <Spinner /> : "Ask"}
                 </Button>
+
             </form>
         </div>
     );

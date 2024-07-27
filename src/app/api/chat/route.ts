@@ -6,7 +6,6 @@ import { Message } from "ai/react";
 
 export async function POST(req: NextRequest) {
     const { messages, path } = await req.json();
-    console.log("mensaje: ", messages);
 
     const question = messages[messages.length - 1].content;
 
@@ -26,7 +25,6 @@ export async function POST(req: NextRequest) {
     try {
         const result = await langchain({ question, chatHistory, path });
 
-        console.log("result: ", result);
 
         const relevantDocuments = result.context.slice(0, 2);
 

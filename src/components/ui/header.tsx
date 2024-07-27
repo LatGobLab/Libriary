@@ -14,7 +14,7 @@ export default function Header() {
                     <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
                         <a href="https://latgoblab.com/" className="flex items-center">
                             <img src="https://latgob.school/pluginfile.php/1/core_admin/logocompact/300x300/1714967970/256x256.png" className="mr-3 h-6 sm:h-9" alt="latgoblab Logo" />
-                            <span className="self-center text-xl font-semibold whitespace-nowrap ">LatGobLab</span>
+                            <span className="self-center text-xl font-semibold whitespace-nowrap ">Menu</span>
                         </a>
                         <div className="flex items-center lg:order-2">
                             <ModeToggle />
@@ -33,20 +33,11 @@ export default function Header() {
                                 </li>
                                 <li>
                                     <Link
-                                        href="/Company"
-                                        className={`block py-2 pr-4 pl-3 border-b border-gray-100 lg:border-0 lg:p-0 ${pathname === '/Company' ? 'font-semibold' : 'text-gray-700 hover:text-primary-700'
+                                        href="/companies"
+                                        className={`block py-2 pr-4 pl-3 border-b border-gray-100 lg:border-0 lg:p-0 ${pathname === '/companies' ? 'font-semibold' : 'text-gray-700 hover:text-primary-700'
                                             }`}
                                     >
-                                        Company
-                                    </Link>
-                                </li>
-                                <li>
-                                    <Link
-                                        href="/Team"
-                                        className={`block py-2 pr-4 pl-3 border-b border-gray-100 lg:border-0 lg:p-0 ${pathname === '/Team' ? 'font-semibold' : 'text-gray-700 hover:text-primary-700'
-                                            }`}
-                                    >
-                                        Team
+                                        Compañías
                                     </Link>
                                 </li>
                                 <li>
