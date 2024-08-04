@@ -35,7 +35,7 @@ export default function page() {
             direction="horizontal"
             className=" border">
             <ResizablePanel defaultSize={13}>
-                <ScrollArea className="h-[90vh] rounded-md border">
+                <ScrollArea className="h-screen rounded-md border">
                     <div className="flex flex-col p-6 gap-4">
                         <div className="text-2xl font-bold mb-4 flex justify-center items-center">
                             <h2>{company?.name}</h2>

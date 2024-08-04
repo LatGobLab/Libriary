@@ -65,7 +65,7 @@ export function Chat({ path, userMessage }: Props) {
     }, [isLoading]);
 
     return (
-        <div className="rounded-2xl w-full border h-[85vh] flex flex-col justify-between">
+        <div className="rounded-2xl w-full border h-[95vh] flex flex-col justify-between">
             <div className="p-6 overflow-auto" ref={containerRef}>
                 {messages.map(({ id, role, content, annotations }: Message, index: number) => (
                     <ChatLine

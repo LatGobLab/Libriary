@@ -22,46 +22,34 @@ function App() {
     };
 
     return (
-        <div className="flex flex-col items-center justify-between h-[90vh]">
-            <div className="flex items-center space-x-4 mt-10">
-                <div>
-                    <img
-                        src={`/assets/latgoblab.png`}
-                        alt="Company Logo"
-                        width={300}
-                        height={200}
-                        className="object-cover"
-                    />
-                </div>
-                <div className="text-center">
-                    <div className="flex items-center space-x-2">
-                        <h1 className="text-4xl font-bold">Hola,</h1>
-                        <p className="text-sm">soy un asistente dedicado a las ciudades</p>
+        <>
+            <a href="https://latgoblab.com/" className="flex pt-5 pl-5">
+                <img src="https://latgob.school/pluginfile.php/1/core_admin/logocompact/300x300/1714967970/256x256.png" className="mr-3 h-6 sm:h-9" alt="latgoblab Logo" />
+                <span className="self-center text-xl whitespace-nowrap ">Home</span>
+            </a>
+
+            <div className="flex flex-col items-center justify-center h-[90vh]">
+
+                <div className="flex items-center">
+                    <div className="text-center">
+                        <div className="flex flex-col items-center">
+                            <p className="text-xl text-zinc-400">¡Hola! Soy un agente especializado en</p>
+                            <p className="text-xl text-zinc-400">literatura para el desarrollo</p>
+                        </div>
                     </div>
-                    <h2 className="mt-8 text-4xl font-bold tracking-tighter text-foreground">¿Cómo puedo ayudarte?</h2>
                 </div>
+
+                <div className="flex w-full max-w-screen-md items-center mt-10">
+                    <PlaceholdersAndVanishInput
+                        placeholders={placeholders}
+                        onChange={handleInputChange}
+                        onSubmit={handleSubmit} />
+                </div>
+
             </div>
 
-            <div className="flex w-full max-w-screen-md items-center space-x-2">
-                <PlaceholdersAndVanishInput
-                    placeholders={placeholders}
-                    onChange={handleInputChange}
-                    onSubmit={handleSubmit} />
-            </div>
+        </>
 
-            {/* <form onSubmit={handleSubmit} className="p-4 flex clear-both w-full items-center justify-center">
-
-                <div className="flex w-full max-w-screen-md items-center space-x-2">
-                    <Input type="text"
-                        placeholder="Escribe tu pregunta a la IA"
-                        value={inputValue}
-                        onChange={handleInputChange} />
-
-                    <Button type="submit" className='px-10'>Pregunta</Button>
-                </div> 
-            </form>*/}
-
-        </div>
     )
 }
 
