@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
 
-export default function page() {
+export default function Page() {
 
     const pathname = usePathname();
     const searchParams = useSearchParams();
