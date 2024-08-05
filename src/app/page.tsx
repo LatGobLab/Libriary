@@ -25,7 +25,7 @@ function App() {
         <>
             <a href="https://latgoblab.com/" className="flex pt-5 pl-5">
                 <img src="https://latgob.school/pluginfile.php/1/core_admin/logocompact/300x300/1714967970/256x256.png" className="mr-3 h-6 sm:h-9" alt="latgoblab Logo" />
-                <span className="self-center text-xl whitespace-nowrap ">Home</span>
+                <span className="self-center text-xl whitespace-nowrap ">Home: mensaje desde local</span>
             </a>
 
             <div className="flex flex-col items-center justify-center h-[90vh]">
