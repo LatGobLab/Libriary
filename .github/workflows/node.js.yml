@@ -11,7 +11,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [20.16.0]
+        node-version: [22.5.1]
     env: 
       NEXT_PUBLIC_OPENAI_API_KEY: ${{secrets.NEXT_PUBLIC_OPENAI_API_KEY}}
       NEXT_PUBLIC_PINECONE_API_KEY: ${{secrets.NEXT_PUBLIC_PINECONE_API_KEY}}
