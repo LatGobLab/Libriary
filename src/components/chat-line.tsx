@@ -52,7 +52,7 @@ export function ChatLine({ role = "assistant", content, isLastMessage, annotatio
                 : "text-blue-500 dark:text-blue-200"
             }
           >
-            {role == "assistant" ? "AI" : "Tu"}
+            {role == "assistant" ? "AI" : "Tú"}
           </CardTitle>
         </CardHeader>
         <CardContent className="text-base">

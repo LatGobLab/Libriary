@@ -48,7 +48,6 @@ export function Chat({ path, userMessage }: Props) {
     useEffect(() => {
         if (userMessage && userMessage.trim() !== '') {
             setInput(userMessage);
-            console.log("User Message", userMessage);
             setIsUserMessageUsed(true);
             setTimeout(() => {
                 if (submitButtonRef.current) {

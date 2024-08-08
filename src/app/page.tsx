@@ -17,8 +17,7 @@ function App() {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log('inputValue', inputValue);
-        router.push(`/amazon?query=${encodeURIComponent(inputValue)}`);
+        router.push(`/latgoblab?query=${encodeURIComponent(inputValue)}`);
     };
 
     return (

@@ -17,9 +17,6 @@ export default function Page() {
     const pathformatted = pathname.split('/').pop() ?? '';
     const queryParam = searchParams.get('query') ?? '';
 
-    console.log("Dynamic Param: ", pathformatted);
-    console.log("Query Param: ", queryParam);
-
 
     const company = companies.find(company => company.id === pathformatted);
 

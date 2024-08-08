@@ -15,7 +15,7 @@ export const initialMessages: Message[] = [
     role: "assistant",
     id: "0",
     content:
-      "Hola, soy su asistente de PDF. Estaré encantado de ayudarte con tus preguntas sobre tus PDF. ¿En qué puedo ayudarle hoy?",
+      "Hola, soy su asistente ciudadano. Estaré encantado de ayudarte con tus preguntas sobre desarrollo en tu ciudad. ¿En qué puedo ayudarte hoy?",
   },
 ];
 

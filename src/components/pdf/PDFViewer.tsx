@@ -6,7 +6,6 @@ type Promps = {
 }
 
 function PDFViewer({ path, document }: Promps) {
-    console.log(path, document)
 
     try {
         return (
