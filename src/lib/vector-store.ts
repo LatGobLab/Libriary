@@ -2,7 +2,7 @@ import { Pinecone } from "@pinecone-database/pinecone";
 import { PineconeStore } from "@langchain/pinecone";
 import { OpenAIEmbeddings } from "@langchain/openai";
 
-export default async function getVectorStore({ path }: { path: string }) {
+export default async function getVectorStore() {
     try {
         const client = new Pinecone({
             apiKey: process.env.NEXT_PUBLIC_PINECONE_API_KEY || 'mal'
@@ -14,11 +14,12 @@ export default async function getVectorStore({ path }: { path: string }) {
             model: "text-embedding-3-small",
         });
 
-        const index = client.Index(process.env.NEXT_PUBLIC_PINECONE_INDEX_NAME || 'mal');
+        const index = client.Index(process.env.NEXT_PUBLIC_PINECONE_INDEX_NAME || '');
+        const namespace = process.env.NEXT_PUBLIC_PINECONE_NAMESPACE || '';
 
         const vectorStore = await PineconeStore.fromExistingIndex(embeddings, {
             pineconeIndex: index,
-            namespace: path,
+            namespace: namespace,
             textKey: 'text',
         });
 

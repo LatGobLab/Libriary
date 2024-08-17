@@ -1,19 +1,17 @@
-import React from 'react'
+import React from "react";
 
-type Promps = {
-    path: string,
-    document: string | null
+function PDFViewer({ document }: { document: string | null }) {
+  try {
+    return (
+      <iframe
+        src={`https://rgijszbvkbxtzvzfrduf.supabase.co/storage/v1/object/public/Biblio/latgoblab/${document}.pdf`}
+        className="w-full h-full"
+        style={{ border: "none" }}
+      ></iframe>
+    );
+  } catch (error) {
+    console.log(error);
+  }
 }
 
-function PDFViewer({ path, document }: Promps) {
-
-    try {
-        return (
-            <iframe src={`https://firebasestorage.googleapis.com/v0/b/libriary-latgoblab.appspot.com/o/${path}%2F${document}.pdf?alt=media&token=46e687b3-063b-4aa1-af5e-860ffe88147d`} className='w-full h-[95vh]' style={{ border: 'none' }}></iframe>
-        )
-    } catch (error) {
-        console.log(error)
-    }
-}
-
-export default PDFViewer
+export default PDFViewer;

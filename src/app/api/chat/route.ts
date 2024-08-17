@@ -1,12 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import langchain from "@/lib/langchain";
 
-import { Message } from "ai/react";
-
 
 export async function POST(req: NextRequest) {
-    const { messages, path } = await req.json();
-
+    const { messages } = await req.json();
     const question = messages[messages.length - 1].content;
 
     const chatHistory: [string, string][] = [];
@@ -23,8 +20,7 @@ export async function POST(req: NextRequest) {
     }
 
     try {
-        const result = await langchain({ question, chatHistory, path });
-
+        const result = await langchain({ question, chatHistory });
 
         const relevantDocuments = result.context.slice(0, 2);
 

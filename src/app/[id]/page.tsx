@@ -11,14 +11,12 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 
 export default function Page() {
 
-    const pathname = usePathname();
     const searchParams = useSearchParams();
 
-    const pathformatted = pathname.split('/').pop() ?? '';
     const queryParam = searchParams.get('query') ?? '';
 
 
-    const company = companies.find(company => company.id === pathformatted);
+    const company = companies.find(company => company.id === "latgoblab");
 
     const [selectBook, setSelectBook] = useState<string | null>(company?.books?.[0] ?? null);
 
@@ -31,8 +29,8 @@ export default function Page() {
         <ResizablePanelGroup
             direction="horizontal"
             className=" border">
-            <ResizablePanel defaultSize={13}>
-                <ScrollArea className="h-screen rounded-md border">
+            <ResizablePanel defaultSize={13} className="hidden lg:block">
+                <ScrollArea className="h-full rounded-md border  ">
                     <div className="flex flex-col p-6 gap-4">
                         <div className="text-2xl font-bold mb-4 flex justify-center items-center">
                             <h2>{company?.name}</h2>
@@ -51,16 +49,19 @@ export default function Page() {
                 </ScrollArea>
             </ResizablePanel>
 
+
             <ResizableHandle withHandle />
-            <ResizablePanel defaultSize={40}>
-                <div className="flex items-center justify-center p-6">
-                    <PDFViewer path={pathformatted} document={selectBook || ''} />
-                </div>
-            </ResizablePanel>
+            <ResizablePanel defaultSize={40} className="hidden lg:block">
+                <div className="flex items-center justify-center h-full">
+                        <PDFViewer document={selectBook || ''} />
+                    </div>
+                </ResizablePanel>
+
+
             <ResizableHandle withHandle />
             <ResizablePanel defaultSize={47}>
-                <div className="flex items-center justify-center p-6">
-                    <Chat path={pathformatted} userMessage={queryParam} />
+                <div className="flex items-center justify-center h-full" >
+                    <Chat userMessage={queryParam} />
                 </div>
             </ResizablePanel>
         </ResizablePanelGroup>

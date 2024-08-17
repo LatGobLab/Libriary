@@ -15,7 +15,6 @@ import getVectorStore from "./vector-store";
 type ArgumentsRAG = {
   question: string;
   chatHistory: [string, string][];
-  path: string;
 }
 
 type ConversationalRetrievalQAChainInput = {
@@ -27,7 +26,7 @@ type ConversationalRetrievalQAChainInput = {
 const formatChatHistory = (chatHistory: [string, string][]) =>
   chatHistory.map(([human, ai]) => `Human: ${human}\nAssistant: ${ai}`).join("\n");
 
-export default async function langchain({ question, chatHistory, path }: ArgumentsRAG) {
+export default async function langchain({ question, chatHistory }: ArgumentsRAG) {
   try {
     const sanitizedQuestion = question.trim().replaceAll("\n", " ");
 
@@ -37,7 +36,7 @@ export default async function langchain({ question, chatHistory, path }: Argumen
       temperature: 0,
     });
 
-    const vectorStore = await getVectorStore({ path });
+    const vectorStore = await getVectorStore();
     const retriever = vectorStore.asRetriever();
 
     const standaloneQuestionChain = RunnableSequence.from([

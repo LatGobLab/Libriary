@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import Balancer from "react-wrap-balancer";
 import {
   Card,
@@ -24,7 +24,58 @@ interface ChatLineProps extends Partial<Message> {
   annotations?: any[];
 }
 
-export function ChatLine({ role = "assistant", content, isLastMessage, annotations }: ChatLineProps) {
+const MarkdownContent = React.memo(({ content }: { content: string }) => (
+  <ReactMarkdown
+    className="markdown-content"
+    remarkPlugins={[remarkGfm, remarkMath]}
+    rehypePlugins={[rehypeKatex]}
+    components={{
+      ol: ({ node, ...props }) => <ol className="list-decimal list-outside" {...props} />,
+      ul: ({ node, ...props }) => <ul className="list-disc list-outside" {...props} />,
+    }}
+  >
+    {content}
+  </ReactMarkdown>
+));
+
+const AnimatedContent = React.memo(({ content, onComplete }: { content: string, onComplete: () => void }) => (
+  <TypeAnimation
+    sequence={[
+      content,
+      onComplete
+    ]}
+    wrapper="span"
+    cursor={false}
+    repeat={0}
+    style={{ whiteSpace: 'pre-line', display: 'inline-block' }}
+    speed={90}
+  />
+));
+
+
+const Annotations = React.memo(({ annotations }: { annotations: any[] }) => (
+  <Accordion type="single" collapsible>
+    <AccordionItem value="annotations">
+      <AccordionTrigger>Fuentes</AccordionTrigger>
+      <AccordionContent>
+        {annotations.map((annotation, index) => (
+          <div key={index} className="mb-2 p-2 bg-gray-100 dark:bg-gray-800 rounded text-sm">
+            <p className="line-clamp-3">
+              {annotation?.pageContent}
+            </p>
+            <p className="text-xs text-gray-500 mt-1">
+              Fuente: {annotation?.metadata.source}, Página: {annotation?.metadata.page}
+            </p>
+          </div>
+        ))}
+      </AccordionContent>
+    </AccordionItem>
+  </Accordion>
+));
+
+
+
+export const ChatLine = React.memo(({ role = "assistant", content, isLastMessage, annotations }: ChatLineProps) => {
   const [shouldAnimate, setShouldAnimate] = useState(false);
   const [animationComplete, setAnimationComplete] = useState(false);
 
@@ -40,6 +91,15 @@ export function ChatLine({ role = "assistant", content, isLastMessage, annotatio
   if (!content) {
     return null;
   }
+
+  const handleAnimationComplete = () => setAnimationComplete(true);
+
+  const contentToRender = useMemo(() => {
+    if (shouldAnimate && role === "assistant" && !animationComplete) {
+      return <AnimatedContent content={content} onComplete={handleAnimationComplete} />;
+    }
+    return <MarkdownContent content={content} />;
+  }, [shouldAnimate, role, animationComplete, content]);
 
   return (
     <div>
@@ -57,53 +117,15 @@ export function ChatLine({ role = "assistant", content, isLastMessage, annotatio
         </CardHeader>
         <CardContent className="text-base">
           <Balancer>
-            {(shouldAnimate && role === "assistant" && !animationComplete) ? (
-              <TypeAnimation
-                sequence={[
-                  content,
-                  () => setAnimationComplete(true)
-                ]}
-                wrapper="span"
-                cursor={false}
-                repeat={0}
-                style={{ whiteSpace: 'pre-line', display: 'inline-block' }}
-                speed={90}
-              />
-            ) : (
-              <ReactMarkdown
-                className="markdown-content"
-                remarkPlugins={[remarkGfm, remarkMath]}
-                rehypePlugins={[rehypeKatex]}
-                components={{
-                  ol: ({ node, ...props }) => <ol className="list-decimal list-outside" {...props} />,
-                  ul: ({ node, ...props }) => <ul className="list-disc list-outside" {...props} />,
-                }}
-              >
-                {content}
-              </ReactMarkdown>
-            )}
+            {contentToRender}
           </Balancer>
         </CardContent>
         {role === "assistant" && annotations && annotations.length > 0 && (
           <CardContent>
-            <Accordion type="single" collapsible>
-              <AccordionItem value="annotations">
-                <AccordionTrigger>Fuentes</AccordionTrigger>
-                <AccordionContent>
-                  {annotations.map((annotation, index) => (
-                    <div key={index} className="mb-2 p-2 bg-gray-100 dark:bg-gray-800 rounded text-sm">
-                      <p>{annotation?.pageContent}</p>
-                      <p className="text-xs text-gray-500 mt-1">
-                        Fuente: {annotation?.metadata.source}, Página: {annotation?.metadata.page}
-                      </p>
-                    </div>
-                  ))}
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
+            <Annotations annotations={annotations} />
           </CardContent>
         )}
       </Card>
     </div>
   );
-}
+});
