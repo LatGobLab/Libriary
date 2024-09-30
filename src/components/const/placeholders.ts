@@ -1,18 +1,7 @@
 export const placeholders = [
-    "¿Qué factores influyen en la supervivencia de las MIPYMES?",
-    "¿Qué políticas locales combaten el cambio climático?",
-    "¿Cómo fortalecer la cohesión comunitaria?",
-    "¿Cómo preservar los recursos naturales?",
-    "¿Cómo mejorar el apoyo a emprendedores locales?",
-    "¿Cómo fomentar la inclusión social?",
-    "¿Qué es economía circular?",
-    "¿Cómo cuidar los recursos naturales?",
-    "¿Cómo promover el desarrollo sin dañar el medio ambiente?",
-    "¿Qué sectores económicos podemos impulsar?",
-    "¿Qué políticas pueden reducir el desempleo?",
-    "¿Qué estrategias fomentan el desarrollo sostenible?",
-    "¿Cómo cuidar los recursos naturales?",
-    "¿Cómo mejorar la educación local?",
-    "¿Cómo apoyar la digitalización de empresas?",
-    "¿Qué es una política pública?",
+    "El principito",
+    "El alquimista",
+    "Harry Potter",
+    "El señor de los anillos",
+    "El Código Da Vinci"
 ];

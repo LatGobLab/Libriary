@@ -1,17 +1,19 @@
-import React from "react";
+"use client";
 
-function PDFViewer({ document }: { document: string | null }) {
-  try {
-    return (
-      <iframe
-        src={`https://rgijszbvkbxtzvzfrduf.supabase.co/storage/v1/object/public/Biblio/latgoblab/${document}.pdf`}
-        className="w-full h-full"
-        style={{ border: "none" }}
-      ></iframe>
-    );
-  } catch (error) {
-    console.log(error);
-  }
+import React from "react";
+type Promps = {
+  path: string;
+  document: string | null;
+};
+
+function PDFViewer({ path, document }: Promps) {
+  return (
+    <iframe
+      src={`/documents/${document}.pdf`}
+      className="w-full h-full"
+      style={{ border: "none" }}
+    />
+  );
 }
 
 export default PDFViewer;
